@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+    <title>KYC Custumer Portal</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="./indexCustomer.css" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <h1> KYC Customer Portal</h1>
+
+        </header>
+        <section>
+            <div id="container_demo">
+                <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                <a class="hiddenanchor" id="toregister"></a>
+                <a class="hiddenanchor" id="tologin"></a>
+                <a class="hiddenanchor" id="toforgot"></a>
+                <div id="wrapper">
+                    <div id="login" class="animate form">
+                        <form>
+                            <h1>Log In</h1>
+                            <p>
+                                <label for="username" class="uname"> Username </label>
+                                <input id="username" name="username" required="required" type="text" placeholder="Username" />
+                            </p>
+                            <p>
+                                <label for="password" class="youpasswd"> Password </label>
+                                <input pattern="(?=.*\d).{6,}" title="Password must contain at least one number and at least 6 characters" id="password" name="password" required="required" type="password" placeholder="eg. asd123" />
+                            </p>
+                            <p>
+                                <label for="bankName" class="youpasswd">Bank Name</label>
+                                <input type="text" list="bankName-datalist" name="Bank Name" id="bankName" placeholder="Bank Name" required="required">
+                                <datalist id="bankName-datalist">
+                                    <option value="BRI"></option>
+                                    <option value="BNI"></option>
+                                    <option value="BTN"></option>
+                                    <option value="Bank Mandiri"></option>
+                                    <option value="BCA"></option>
+                                    <option value="BTPN"></option>
+                                    <option value="Bank CIMB Niaga"></option>
+                                    <option value="Bank Panin"></option>
+                                    <option value="Bank OCBC NISP"></option>
+                                    <option value="Bank Danamon"></option>
+                                    <option value="Bank Maybank"></option>
+                                    <option value="Bank Permata"></option>
+                                </datalist>
+                            </p>
+                            <p>
+                                <label class="custom-file-label" for="keystore">Keystore</label>
+                                <!--Take info from here and store it in the blockchain-->
+                                <input type="file" accept="application/json" onchange="readFile(this)" id="keystore" name="keystore" class="form-control" placeholder="Keystore">
+                            </p>
+                            <p class="signin button">
+                                <input type="submit" value="Log In" onclick="return onClickLogin()" />
+                            </p>
+                            <p1 class="change_link"> 
+                                <center>
+                                    Don't have an account ?
+                                    <a href="#toregister" class="to_register">Create New Account</a>
+                                    <br style="line-height: 2.5">
+                                    <a href="#toforgot" class="to_forgot">Forgot Password</a>
+                                </center>
+                            </p1>
+                            
+                        </form>
+                    </div>
+
+                    <div id="register" class="animate form">
+                        <form>
+                            <h1> Sign Up </h1>
+                            <p>
+                                <label for="usernamesignup" class="uname">Username</label>
+                                <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="Username" />
+                            </p>
+                            <p>
+                                <label for="passwordsignup" class="youpasswd">Password</label>
+                                <input pattern="(?=.*\d).{6,}" title="Password must contain at least one number and at least 6 characters" id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. asd123" />
+                            </p>
+                            <p>
+                                <label for="passwordsignup_confirm" class="youpasswd">Confirm your password</label>
+                                <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. asd123" />
+                            </p>
+                            <p>
+                                <label for="bankNameSignup" class="youpasswd">Bank Name</label>
+                                <input type="text" list="bankNameSignup-datalist" name="Bank Name" id="bankNameSignup" placeholder="Bank Name" required="required">
+                                <datalist id="bankNameSignup-datalist">
+                                    <option value="BRI"></option>
+                                    <option value="BNI"></option>
+                                    <option value="BTN"></option>
+                                    <option value="Bank Mandiri"></option>
+                                    <option value="BCA"></option>
+                                    <option value="BTPN"></option>
+                                    <option value="Bank CIMB Niaga"></option>
+                                    <option value="Bank Panin"></option>
+                                    <option value="Bank OCBC NISP"></option>
+                                    <option value="Bank Danamon"></option>
+                                    <option value="Bank Maybank"></option>
+                                    <option value="Bank Permata"></option>
+                                </datalist>
+                            </p>
+                            <p class="signin button">
+                                <input type="submit" value="Sign Up" onclick="onClickSignUp()" />
+                            </p>
+                            <p class="change_link">
+                                Already have an account ?
+                                <a href="#tologin" class="to_login">Log In</a>
+                            </p>
+                        </form>
+                    </div>
+
+                    <div id="forgot" class="animate form">
+                        <form>
+                            <h1> Forgot Password </h1>
+                            <p>
+                                <label for="usernameforgot" class="uname">Username</label>
+                                <input id="usernameforgot" name="usernameforgot" required="required" type="text" placeholder="Username" />
+                            </p>
+                            <p>
+                                <label for="passwordforgot" class="youpasswd">Password</label>
+                                <input pattern="(?=.*\d).{6,}" title="Password must contain at least one number and at least 6 characters" id="passwordforgot" name="passwordforgot" required="required" type="password" placeholder="eg. asd123" />
+                            </p>
+                            <p>
+                                <label for="passwordforgot_confirm" class="youpasswd">Confirm your password</label>
+                                <input id="passwordforgot_confirm" name="passwordforgot_confirm" required="required" type="password" placeholder="eg. asd123" />
+                            </p>
+                            <p class="signin button">
+                                <input type="submit" value="Submit" onclick="onClickForgot()" />
+                            </p>
+                            <p class="change_link">
+                                Already complete ?
+                                <a href="#tologin" class="to_login">Log In</a>
+                            </p>
+                        </form>
+                    </div>
+                
+                </div>
+                <div id="wrapper">
+                    
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- Theme JavaScript -->
+    <script src="js/agency.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.min.js" integrity="sha256-9rSwSMn4GDjf9FcHmJSvdiKGrk+mNIUmM4ltFDu3MUU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereumjs/browser-builds/dist/ethereumjs-tx/ethereumjs-tx-1.3.3.min.js"></script>
+
+    <script type="text/javascript">
+        if (typeof window.web3 !== "undefined" && typeof window.web3.currentProvider !== "undefined") {
+            const web3 = new Web3(window.web3.currentProvider);
+        } else {
+            const web3 = new Web3();
+        }
+    </script>
+
+    <script language="JavaScript" type="text/javascript" src="./js/contractDetails.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./indexCustomer.js"></script>
+
+    <script>
+    $('#keystore').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+    </script>
+
+
+</body>
+
+</html>
