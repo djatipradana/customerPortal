@@ -1,2 +1,2 @@
 # KYC Customer Portal
-https://djatipradana.github.io/kyccustomerportal.github.io/
+https://djatipradana.github.io/customerPortal/
