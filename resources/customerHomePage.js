@@ -125,5 +125,5 @@ function logout(){
     localStorage.removeItem("accountAddress");
     localStorage.removeItem("username");
     localStorage.removeItem("bankName");
-    window.location.href = "../indexCustomer.html";
+    window.location.href = "../index.html";
 }

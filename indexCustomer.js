@@ -127,17 +127,9 @@ function onClickSignUp() {
     }
     if (confirm("I accept that the details provided are correct.") == true) {
         generate(username_c, password_c, bankNameSignup);
-        window.location.href = './indexCustomer.html';
+        //window.location.href = './index.html';
         return false;
     }
-    /*
-    if (contractInstance.setPassword.call(username_c, password_c) == false) {
-        alert("Account already exist");
-        return false;
-    }
-    contractInstance.setPassword.sendTransaction(username_c, password_c, { from: web3.eth.accounts[0], gas: 4700000 });
-    alert("Successfully registered account! Go to the login area to proceed!");
-    return false;   */
 }
 
 async function generate(username_c, password_c, bankNameSignup) {
@@ -212,7 +204,7 @@ function onClickForgot() {
     }
     if (confirm("I accept that the details provided are correct.") == true) {
         generateForgot(usernameForgot, passwordForgot);
-        window.location.href = './indexCustomer.html';
+        //window.location.href = './index.html';
         return false;
     }
 
