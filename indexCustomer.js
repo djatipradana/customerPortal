@@ -285,7 +285,7 @@ function onClickForgot() {
         generateForgot(usernameForgot, passwordForgot);
         //document.location.assign('./index.html');
         return false;
-    }
+    } 
 
 }
 
