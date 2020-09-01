@@ -28,32 +28,66 @@ window.onload = function() {
 
 
 web3.eth.defaultAccount = current_address;
-let privateKey1 = new ethereumjs.Buffer.Buffer(current_privkey, 'hex');
+let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
 
 function sendSign(myData,gasLimit){
-    web3.eth.getTransactionCount(current_address, (err, txCount) => {
+    web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
     // Build the transaction
-      const txObject = {
+    const txObject = {
         nonce:    web3.utils.toHex(txCount),
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
         gasLimit: web3.utils.toHex(gasLimit),
-        gasPrice: web3.utils.toHex(web3.utils.toWei('6', 'gwei')),
-        data: myData  
-      }
-        // Sign the transaction
-        //const tx = new Tx(txObject);
-        const tx = new ethereumjs.Tx(txObject);
-        tx.sign(privateKey1);
+        gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+        data: addCust  
+    }
+    // Sign the transaction
+    //const tx = new Tx(txObject);
+    const tx = new ethereumjs.Tx(txObject);
+    tx.sign(privateKey1);
 
-        const serializedTx = tx.serialize();
-        const raw = '0x' + serializedTx.toString('hex');
+    const serializedTx = tx.serialize();
+    const raw = '0x' + serializedTx.toString('hex');
 
-        // Broadcast the transaction
-        const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
-            console.log(tx)
-        });
+    // Broadcast the transaction
+     /*const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
+        console.log(tx)
+    }); */
+
+    const transaction = web3.eth.sendSignedTransaction(raw)
+        .on('transactionHash', hash => {
+            console.log('TX Hash', hash)
+            console.log('Transaction was send, please wait ... ')
+            console.log("https://ropsten.etherscan.io/tx/"+ hash);
+        })
+        .then(receipt => {
+            console.log('Mined', receipt)
+            console.log("Your transaction was mined...")
+            //setTimeout(function () { location.reload(1); }, 1000);
+            console.log(receipt.status)
+            if(receipt.status == true ) {
+                console.log('Transaction Success')
+                alert("Customer profile successfully created or updated. \nCheck the customer details from the KYC Details tab.");
+                document.location.assign('../../customerHomePage.html');
+                return false;
+                //alert('Transaction Success')
+            }
+            else if(receipt.status == false) {
+                console.log('Transaction Failed')
+                alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
+                return false;
+            }
+        })
+        .catch( err => {
+            console.log('Error', err)
+            //alert('Transaction Failed')
+        })
+        .finally(() => {
+            console.log('Extra Code After Everything')
+        })
     });
+    
+    
 }
 
 
@@ -77,7 +111,7 @@ async function addCust(current_address, current_username, data, current_bankName
 
     let addCust = await contractInstance.methods.addCustomer(current_address, current_username, data, current_bankName).encodeABI();
     sendSign(addCust,500000);
-    
+
     /*let addCust2 = await contractInstance.methods.addCustomer2(current_username, username, occupation, income, dob, gender, residence).send({
         from: current_address,
         gas: 4700000
@@ -86,14 +120,15 @@ async function addCust(current_address, current_username, data, current_bankName
         from: current_address,
         gas: 4700000
     }); */
-    if (addCust == 0 ) {
+    
+    /*if (addCust == 0 ) {
         alert("Customer profile successfully created or updated. \nCheck the customer details from the KYC Details tab.");
-        window.location = '../../customerHomePage.html';
+        document.location.assign('../../customerHomePage.html');
         return false;
     } else {
         alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
         return false;
-    }
+    }   */
 }
 
 

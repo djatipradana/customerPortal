@@ -14,29 +14,56 @@ var contractInstance = kycContract.at(contractAddress); */
 const contractInstance = new web3.eth.Contract(abi, contractAddress);
 var keyStoreEnc;
 
-function sendSign(bankAddress,privateKey1,myData,gasLimit){
-    web3.eth.getTransactionCount(bankAddress, (err, txCount) => {
+function sendSign(ownerAccountAddress,privateKey1,myData,gasLimit){
+    web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
     // Build the transaction
-      const txObject = {
+    const txObject = {
         nonce:    web3.utils.toHex(txCount),
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
         gasLimit: web3.utils.toHex(gasLimit),
-        gasPrice: web3.utils.toHex(web3.utils.toWei('6', 'gwei')),
+        gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
         data: myData  
-      }
-        // Sign the transaction
-        //const tx = new Tx(txObject);
-        const tx = new ethereumjs.Tx(txObject);
-        tx.sign(privateKey1);
+    }
+    // Sign the transaction
+    //const tx = new Tx(txObject);
+    const tx = new ethereumjs.Tx(txObject);
+    tx.sign(privateKey1);
 
-        const serializedTx = tx.serialize();
-        const raw = '0x' + serializedTx.toString('hex');
+    const serializedTx = tx.serialize();
+    const raw = '0x' + serializedTx.toString('hex');
 
-        // Broadcast the transaction
-        const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
-            console.log(tx)
-        });
+    // Broadcast the transaction
+     /*const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
+        console.log(tx)
+    }); */
+
+    const transaction = web3.eth.sendSignedTransaction(raw)
+        .on('transactionHash', hash => {
+            console.log('TX Hash', hash)
+            alert('Transaction was send, please wait ... ')
+            console.log("https://ropsten.etherscan.io/tx/"+ hash);
+        })
+        .then(receipt => {
+            console.log('Mined', receipt)
+            console.log("Your transaction was mined...")
+            setTimeout(function () { location.reload(1); }, 1000);
+            console.log(receipt.status)
+            if(receipt.status == true ) {
+                console.log('Transaction Success')
+                //alert('Transaction Success')
+            }
+            else if(receipt.status == false) {
+                console.log('Transaction Failed')
+            }
+        })
+        .catch( err => {
+            console.log('Error', err)
+            //alert('Transaction Failed')
+        })
+        .finally(() => {
+            console.log('Extra Code After Everything')
+        })
     });
 }
 
@@ -45,24 +72,16 @@ function onClickLogin() {
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
     var bankName = document.getElementById("bankName").value;
-    /*if (contractInstance.checkCustomer.call(username_c, password_c) == false) {
-        alert("Sorry! Invalid username or password. Sign up first if you haven't!");
-        return false;
-    }*/
-    //  alert("Welcome "+username_c+" !");
+    
     if (username == "" || password == "") {
+        alert("Invalid username or password");
+        return false;
+    } else if (bankName == "") {
         alert("Invalid bank name or password");
         return false;
     } else {
         connection(username, password, bankName);
     }
-    /*
-    localStorage.username_c = username_c;
-    localStorage.password_c = password_c;
-    alert("Welcome " + localStorage.username_c + " !");
-    window.location = './customerHomePage.html';
-    return false;
-    */
 }
 
 async function connection(username, password, bankName) {
@@ -86,7 +105,7 @@ async function connection(username, password, bankName) {
     let checkCustomer = await contractInstance.methods.checkAccountCust(username, current_account, password, bankName).call(); 
     if (checkCustomer == true) {
         alert("Welcome " + username);
-        window.location = './resources/customerHomePage.html';
+        document.location.assign('./resources/customerHomePage.html');
         return false;
     } else { 
         alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
@@ -127,7 +146,7 @@ function onClickSignUp() {
     }
     if (confirm("I accept that the details provided are correct.") == true) {
         generate(username_c, password_c, bankNameSignup);
-        //window.location.href = './index.html';
+        //document.location.assign('./index.html');
         return false;
     }
 }
@@ -142,19 +161,79 @@ async function generate(username_c, password_c, bankNameSignup) {
     });
     */
 
+    let cek = await web3.eth.getBalance(ownerAccountAddress)
+    console.log('owner', ownerPrivateKey, ownerAccountAddress, cek) 
     web3.eth.defaultAccount = dataAcc.address;
-    let privateKey1 = new ethereumjs.Buffer.Buffer(dataAcc.privateKey, 'hex');
+    let privKey = dataAcc.privateKey;
+    console.log('accountAddress', privKey.substring(2), dataAcc.address) 
+    let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
     let addAccountCust = await contractInstance.methods.addAccountCust(username_c, password_c, dataAcc.address, bankNameSignup).encodeABI();
-    sendSign(dataAcc.address,privateKey1,addAccountCust,150000);
+    //sendSign(dataAcc.address,privateKey1,addAccountCust,250000);
+    
+    web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
+    // Build the transaction
+    const txObject = {
+        nonce:    web3.utils.toHex(txCount),
+        to:       contractAddress,
+        value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
+        gasLimit: web3.utils.toHex(250000),
+        gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+        data: addAccountCust
+    }
+    // Sign the transaction
+    //const tx = new Tx(txObject);
+    const tx = new ethereumjs.Tx(txObject);
+    tx.sign(privateKey1);
 
-    if (addAccountCust == 0) {
+    const serializedTx = tx.serialize();
+    const raw = '0x' + serializedTx.toString('hex');
+
+    // Broadcast the transaction
+     /*const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
+        console.log(tx)
+    }); */
+
+    const transaction = web3.eth.sendSignedTransaction(raw)
+        .on('transactionHash', hash => {
+            console.log('TX Hash', hash)
+            alert('Transaction was send, please wait ... ')
+            console.log("https://ropsten.etherscan.io/tx/"+ hash);
+        })
+        .then(receipt => {
+            console.log('Mined', receipt)
+            console.log("Your transaction was mined...")
+            setTimeout(function () { location.reload(1); }, 1000);
+            console.log(receipt.status)
+            if(receipt.status == true ) {
+                console.log('Transaction Success')
+                alert("Account successfully registered. \nGo to the login area to proceed.");
+                encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
+                return false;
+                //alert('Transaction Success')
+            }
+            else if(receipt.status == false) {
+                console.log('Transaction Failed')
+                alert("Account hasn't been successfully registered. \nPlease try again.");
+                return false;
+            }
+        })
+        .catch( err => {
+            console.log('Error', err)
+            //alert('Transaction Failed')
+        })
+        .finally(() => {
+            console.log('Extra Code After Everything')
+        })
+    });
+
+    /*if (addAccountCust == 0) {
         alert("Account successfully registered. \nGo to the login area to proceed.");
+        encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
         return false;
     } else {
         alert("Account hasn't been successfully registered. \nPlease try again.");
         return false;
-    }
-    encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
+    }   */
 }
 
 function encryptPrivateKey(privateKey,address,pass) {
@@ -185,7 +264,7 @@ function convert(inputTs){
     // Seconds
     var seconds = "0" + date.getSeconds();
     // Display date time in dd-MM-yyyy (h;m;s) format
-    return  day + '-' + month + '-' + year +' ('+ hours + ';' + minutes.substr(-2) + ';' + seconds.substr(-2) + ')';
+    return  day + '-' + month + '-' + year +'_'+ hours + '-' + minutes.substr(-2) + '-' + seconds.substr(-2);
 }
 
 
@@ -204,7 +283,7 @@ function onClickForgot() {
     }
     if (confirm("I accept that the details provided are correct.") == true) {
         generateForgot(usernameForgot, passwordForgot);
-        //window.location.href = './index.html';
+        //document.location.assign('./index.html');
         return false;
     }
 
@@ -225,19 +304,79 @@ async function generateForgot(usernameForgot, passwordForgot) {
             gas: 4700000
         }); */
 
+        let cek = await web3.eth.getBalance(ownerAccountAddress)
+        console.log('owner', ownerPrivateKey, ownerAccountAddress, cek) 
         web3.eth.defaultAccount = dataAcc.address;
-        let privateKey1 = new ethereumjs.Buffer.Buffer(dataAcc.privateKey, 'hex');
+        let privKey = dataAcc.privateKey;
+        console.log('accountAddress', privKey.substring(2), dataAcc.address) 
+        let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
         let forgotAccountCust = await contractInstance.methods.forgotAccountCust(usernameForgot, passwordForgot, dataAcc.address).encodeABI();
-        sendSign(dataAcc.address,privateKey1,forgotAccountCust,50000);
+        //sendSign(dataAcc.address,privateKey1,forgotAccountCust,250000);
 
-        if (forgotAccountCust == 0) {
+        web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
+        // Build the transaction
+        const txObject = {
+            nonce:    web3.utils.toHex(txCount),
+            to:       contractAddress,
+            value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
+            gasLimit: web3.utils.toHex(250000),
+            gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+            data: addAccountCust
+        }
+        // Sign the transaction
+        //const tx = new Tx(txObject);
+        const tx = new ethereumjs.Tx(txObject);
+        tx.sign(privateKey1);
+
+        const serializedTx = tx.serialize();
+        const raw = '0x' + serializedTx.toString('hex');
+
+        // Broadcast the transaction
+         /*const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
+            console.log(tx)
+        }); */
+
+        const transaction = web3.eth.sendSignedTransaction(raw)
+            .on('transactionHash', hash => {
+                console.log('TX Hash', hash)
+                alert('Transaction was send, please wait ... ')
+                console.log("https://ropsten.etherscan.io/tx/"+ hash);
+            })
+            .then(receipt => {
+                console.log('Mined', receipt)
+                console.log("Your transaction was mined...")
+                setTimeout(function () { location.reload(1); }, 1000);
+                console.log(receipt.status)
+                if(receipt.status == true ) {
+                    console.log('Transaction Success')
+                    alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
+                    encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
+                    return false;
+                    //alert('Transaction Success')
+                }
+                else if(receipt.status == false) {
+                    console.log('Transaction Failed')
+                    alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
+                    return false;
+                }
+            })
+            .catch( err => {
+                console.log('Error', err)
+                //alert('Transaction Failed')
+            })
+            .finally(() => {
+                console.log('Extra Code After Everything')
+            })
+        });
+
+        /*if (forgotAccountCust == 0) {
             alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
+            encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
             return false;
         } else {
             alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
             return false;
-        }
-        encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
+        }   */
     //} else {
         //alert(usernameForgot + " hasn't been registered yet");
     //}
