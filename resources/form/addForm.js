@@ -38,7 +38,7 @@ function sendSign(myData,gasLimit){
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
         gasLimit: web3.utils.toHex(gasLimit),
-        gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+        gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
         data: addCust  
     }
     // Sign the transaction

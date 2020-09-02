@@ -410,6 +410,7 @@ contract Kyc {
         isCust[uname] = false;
         if (!isCust[uname]) {
             updateRatingBank(cust[uname].bankName, false);
+            delete acc[uname];
             delete cust[uname];
             delete isCust[uname];
             return 0;

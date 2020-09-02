@@ -22,7 +22,7 @@ function sendSign(ownerAccountAddress,privateKey1,myData,gasLimit){
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
         gasLimit: web3.utils.toHex(gasLimit),
-        gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+        gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
         data: myData  
     }
     // Sign the transaction
@@ -177,7 +177,7 @@ async function generate(username_c, password_c, bankNameSignup) {
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
         gasLimit: web3.utils.toHex(250000),
-        gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+        gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
         data: addAccountCust
     }
     // Sign the transaction
@@ -320,7 +320,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
             to:       contractAddress,
             value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
             gasLimit: web3.utils.toHex(250000),
-            gasPrice: web3.utils.toHex(web3.utils.toWei('9', 'gwei')),
+            gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
             data: addAccountCust
         }
         // Sign the transaction
