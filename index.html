@@ -1,11 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<html lang="en" class="no-js">
-<!--<![endif]-->
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -31,7 +25,7 @@
                 <a class="hiddenanchor" id="toforgot"></a>
                 <div id="wrapper">
                     <div id="login" class="animate form">
-                        <form>
+                        <form method="POST">
                             <h1>Log In</h1>
                             <p>
                                 <label for="username" class="uname"> Username </label>
@@ -43,7 +37,7 @@
                             </p>
                             <p>
                                 <label for="bankName" class="youpasswd">Bank Name</label>
-                                <input type="text" list="bankName-datalist" name="Bank Name" id="bankName" placeholder="Bank Name" required="required">
+                                <input type="text" list="bankName-datalist" name="bankName" id="bankName" placeholder="Bank Name" required="required">
                                 <datalist id="bankName-datalist">
                                     <option value="BRI"></option>
                                     <option value="BNI"></option>
@@ -65,7 +59,7 @@
                                 <input type="file" accept="application/json" onchange="readFile(this)" id="keystore" name="keystore" class="form-control" placeholder="Keystore">
                             </p>
                             <p class="signin button">
-                                <input type="submit" value="Log In" onclick="return onClickLogin()" />
+                                <input type="submit" value="Log In" onclick="onClickLogin()" />
                             </p>
                             <p1 class="change_link"> 
                                 <center>
@@ -167,6 +161,7 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7/web3.min.js" integrity="sha256-9rSwSMn4GDjf9FcHmJSvdiKGrk+mNIUmM4ltFDu3MUU=" crossorigin="anonymous"></script>
+    <!--script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.10/dist/web3.min.js"></script-->
     <script src="https://cdn.jsdelivr.net/gh/ethereumjs/browser-builds/dist/ethereumjs-tx/ethereumjs-tx-1.3.3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/filesaver.js@1.3.4/FileSaver.min.js" integrity="sha256-5IjlS/EkXaEXRrVOMusSOlmQsyFy3DvCD5QC5mJZubU=" crossorigin="anonymous"></script>
 
