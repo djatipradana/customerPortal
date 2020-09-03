@@ -3,7 +3,9 @@
 //const Web3 = require('web3');
 //const Tx = require('ethereumjs-tx'); 
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42"));
+const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/ac5f43a04597497193bf03a205950f0c"));
+//https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42 
+
 /*var kycContract = web3.eth.contract(abi);
 var deployedContract = kycContract.new({
     data: binaryData,
@@ -12,8 +14,21 @@ var deployedContract = kycContract.new({
 });
 var contractInstance = kycContract.at(contractAddress); */
 const contractInstance = new web3.eth.Contract(abi, contractAddress);
+//contractInstance.setProvider(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42"));
 var keyStoreEnc;
+/*
+const xhr = new XMLHttpRequest();
+const url = 'https://ropsten.infura.io/v3/ac5f43a04597497193bf03a205950f0c';
+xhr.open('POST', url);
+xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
+xhr.setRequestHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+xhr.setRequestHeader("Access-Control-Allow-Headers", "x-access-token, Origin, Content-Type, Accept");
+xhr.setRequestHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origin,Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization");
 
+//xhr.onreadystatechange = someHandler;
+xhr.send(); 
+*/
 function sendSign(ownerAccountAddress,privateKey1,myData,gasLimit){
     web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
     // Build the transaction
@@ -96,13 +111,18 @@ async function connection(username, password, bankName) {
     let acc= web3.eth.accounts.privateKeyToAccount(hexKey);
     let current_account= acc.address;
     localStorage.setItem("accountAddress",current_account);
+    console.log(username, password, bankName)
 
+    let cek = await web3.eth.getBalance(ownerAccountAddress)
+    console.log('owner', ownerPrivateKey, ownerAccountAddress, cek)
     /*if (contractInstance.checkBank.call(bank_name_l, current_account, {
             from: ,
             gas: 4700000
         ) == bank_name_l) */ 
     //let checkCustomer = await contractInstance.checkAccountCust.call(username, current_account, password, bankName);
     let checkCustomer = await contractInstance.methods.checkAccountCust(username, current_account, password, bankName).call(); 
+    console.log(checkCustomer)
+    
     if (checkCustomer == true) {
         alert("Welcome " + username);
         document.location.assign('./resources/customerHomePage.html');
@@ -285,7 +305,7 @@ function onClickForgot() {
         generateForgot(usernameForgot, passwordForgot);
         //document.location.assign('./index.html');
         return false;
-    } 
+    }
 
 }
 
