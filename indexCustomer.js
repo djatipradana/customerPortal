@@ -3,8 +3,9 @@
 //const Web3 = require('web3');
 //const Tx = require('ethereumjs-tx'); 
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/ac5f43a04597497193bf03a205950f0c"));
+const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42"));
 //https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42 
+//https://ropsten.infura.io/v3/ac5f43a04597497193bf03a205950f0c
 
 /*var kycContract = web3.eth.contract(abi);
 var deployedContract = kycContract.new({
