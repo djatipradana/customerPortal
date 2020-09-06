@@ -30,13 +30,12 @@ var element = [
     "occupation",
     "income",
     "dob",
-    "gender_m",
-    "gender_f",
+    "gender",
     "residence",
+    "country",
     "phone1",
     "phone2",
-    "email",
-    "country"
+    "email"
 ];
 
 
@@ -69,17 +68,16 @@ async function fillForm() {
     // Round to nearest 2
     const starPercentageRounded = `${Math.round(starPercentage/2) * 2}%`;
     // Set width of stars-inner to percentage
-    document.querySelector(".stars-inner").style.width = starPercentageRounded;
+    document.querySelector(".stars-inner-cust").style.width = starPercentageRounded;
     // Add number rating
     document.querySelector(".customer_rating").innerHTML = toStar;
 
-    //document.getElementById("customer_rating").innerHTML = viewCust[4];
-    
     document.getElementById("customer_address").innerHTML = viewCust[0];
     document.getElementById("username").innerHTML = viewCust[1];
     document.getElementById("bank_name").innerHTML = viewCust[3];
 
-    const toStarBank = parseFloat(viewBankRating[0])/100;
+    const toStarBank = parseFloat(viewBankRating)/100;
+    console.log(viewBankRating)
     // Get percentage
     const starPercentageBank = (toStarBank/starsTotal) * 100;
     // Round to nearest 2
@@ -88,19 +86,20 @@ async function fillForm() {
     document.querySelector(".stars-inner").style.width = starPercentageRoundedBank;
     // Add number rating
     document.querySelector(".bank_rating").innerHTML = toStarBank;
-
-    //document.getElementById("bank_rating").innerHTML = viewBankRating[0];
     
     var dataProfile = viewCust[2];
     var fill = "";
+    var index = 0;
     var check = Math.min(dataProfile.length);
     for(var i=0; i<check; i++) {
         if (dataProfile.charAt(i) == '!' && dataProfile.charAt(i+1) == '@' && dataProfile.charAt(i+2) == '#') {
             for (var j=i+3; j<check; j++) {
                 fill = fill + dataProfile.charAt(j);
                 if (dataProfile.charAt(j) == '!') {
-                    document.getElementById(element[i]).innerHTML = fill;
-                    fill = ""
+                    var editFill = fill.slice(0,-1);
+                    document.getElementById(element[index++]).innerHTML = editFill;
+                    fill = "";
+                    editFill = "";
                     break;
                 }
             }

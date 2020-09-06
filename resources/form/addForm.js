@@ -68,7 +68,7 @@ function sendSign(myData,gasLimit){
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Customer profile successfully created or updated. \nCheck the customer details from the KYC Details tab.");
-                document.location.assign('../../customerHomePage.html');
+                document.location.assign('../customerHomePage.html');
                 return false;
                 //alert('Transaction Success')
             }
@@ -100,7 +100,7 @@ function onClickSend() {
     //var username = document.getElementById("uname").value;
     
     var data = getInfo();
-    console.log(data)
+    //console.log(data)
     addCust(current_address, current_username, data, current_bankName);
 
 }
@@ -157,9 +157,9 @@ function getInfo() {
     var email = document.getElementById("email").value;
 
     var data = "!@#" + first_name + "!@#" + middle_name + "!@#" + last_name + "!@#" + nik + "!@#" + occupation + "!@#" + income.toString() + "!@#";
-    data =  dob.toString() + "!@#" + gender + "!@#" + residence + "!@#" + country + "!@#" + phone1 + "!@#" + phone2 + "!@#" + email + "!@#";
+    var dataMix =  data + dob.toString() + "!@#" + gender + "!@#" + residence + "!@#" + country + "!@#" + phone1 + "!@#" + phone2 + "!@#" + email + "!@#";
 
-    return data;
+    return dataMix;
 }
 
 

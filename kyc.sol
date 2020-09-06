@@ -182,7 +182,7 @@ contract Kyc {
             checkBankName[bankName].bankAddress = bankAddress;
             checkRegNumber[regNumber] = regNumber;
             isUser[bankAddress] = true;
-            return 0;
+            return 3;
         //}
         //return 1;
     }
@@ -206,16 +206,16 @@ contract Kyc {
             delete checkBankName[bankName];
             delete checkRegNumber[regNumber];
             delete isUser[bankAddress];
-            return 0;
+            return 3;
         }
         return 1;
     }
     
-    function checkBank(string memory bankName, address bankAddress, string memory password) public view userNotExist(bankAddress) returns(bool) {
+    function checkBank(string memory bankName, address bankAddress, string memory password) public view userNotExist(bankAddress) returns(uint8) {
         if (stringsEqual(org[bankAddress].name, bankName) && org[bankAddress].ethAddress == bankAddress && stringsEqual(org[bankAddress].password, password)) {
-            return true;
+            return 3;
         }
-        return false;
+        return 1;
     }
     
     /*
@@ -250,7 +250,7 @@ contract Kyc {
             acc[username].ethAddress = ethAddress;
             acc[username].bankName = bankName;
             isAcc[username] = true;
-            return 0;
+            return 3;
         //}
         //return 1;
     }
@@ -262,7 +262,7 @@ contract Kyc {
             acc[username].password = password;
             acc[username].ethAddress = ethAddress;
             isAcc[username] = true;
-            return 0;
+            return 3;
         }
         return 1;
     }
@@ -272,16 +272,16 @@ contract Kyc {
         if (!isAcc[username]) {
             delete acc[username];
             delete isAcc[username];
-            return 0;
+            return 3;
         }
         return 1;
     }
     
-    function checkAccountCust(string memory username, address ethAddress, string memory password, string memory bankName) public view accNotExist(username) returns(bool) {
+    function checkAccountCust(string memory username, address ethAddress, string memory password, string memory bankName) public view accNotExist(username) returns(uint8) {
         if (stringsEqual(acc[username].username, username) && acc[username].ethAddress == ethAddress && stringsEqual(acc[username].password, password) && stringsEqual(acc[username].bankName, bankName)) {
-            return true;
+            return 3;
         }
-        return false;
+        return 1;
     }
 
     
@@ -304,9 +304,9 @@ contract Kyc {
                     cust[uname].rating = 100;
                     cust[uname].upvotes = 0;
                     isCust[uname] = true;
+                    updateRatingBank(bankName, true);
                 }
-                updateRatingBank(bankName, true);
-                return 0;
+                return 3;
             //}
         //} else {
             /*acc[username].username = username;
@@ -413,7 +413,7 @@ contract Kyc {
             delete acc[uname];
             delete cust[uname];
             delete isCust[uname];
-            return 0;
+            return 3;
         }
         return 1;
     }
@@ -457,10 +457,10 @@ contract Kyc {
     
     function getCustForVerify(string memory uname, string memory bankName) public custNotExist(uname) view returns(uint8) {
         if (stringsEqual(cust[uname].uname, uname) && stringsEqual(cust[uname].bankName, bankName)) {
-            if (stringsEqual(cust[uname].uname, "Not Verified") || stringsEqual(cust[uname].uname, "Rejected")) {
-                return 0;
+            if (stringsEqual(cust[uname].kycStatus, "Not Verified") || stringsEqual(cust[uname].kycStatus, "Rejected")) {
+                return 3;
             }
-            else if (stringsEqual(cust[uname].uname, "Verified")) {
+            else if (stringsEqual(cust[uname].kycStatus, "Verified")) {
                 return 2;
             }
         }
@@ -470,7 +470,7 @@ contract Kyc {
     
     function getCustForDelete(string memory uname, string memory bankName) public custNotExist(uname) view returns(uint8) {
         if (stringsEqual(cust[uname].uname, uname) && stringsEqual(cust[uname].bankName, bankName)) {
-            return 0;
+            return 3;
         }
         return 1;
     }
@@ -478,12 +478,12 @@ contract Kyc {
     
     function setCustVerified(string memory uname) public custNotExist(uname) returns(uint8){
         cust[uname].kycStatus = "Verified";
-        return 0;
+        return 3;
     }
     
     function setCustRejected(string memory uname) public custNotExist(uname) returns(uint8){
         cust[uname].kycStatus = "Rejected";
-        return 0;
+        return 3;
     }
     
     function getCustStatus(string memory uname) public view custNotExist(uname) returns(string memory){
@@ -501,7 +501,7 @@ contract Kyc {
             if (cust[uname].rating > 500) {
                 cust[uname].rating = 500;
             }
-            return 0;
+            return 3;
         } else {
             cust[uname].upvotes--;
             cust[uname].rating = (cust[uname].rating - 100);
@@ -513,7 +513,6 @@ contract Kyc {
             }
             return 1;
         }
-        //return 2;    
     }
     
     function updateRatingBank(string memory bankName, bool ifAdded) public {
@@ -534,7 +533,6 @@ contract Kyc {
                 org[checkBankName[bankName].bankAddress].rating = 0;
             }
         }
-        //return 0;
     }
     
 

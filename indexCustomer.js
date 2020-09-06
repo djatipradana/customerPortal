@@ -347,7 +347,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
             value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
             gasLimit: web3.utils.toHex(250000),
             gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
-            data: addAccountCust
+            data: forgotAccountCust
         }
         // Sign the transaction
         //const tx = new Tx(txObject);
