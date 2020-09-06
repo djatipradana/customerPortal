@@ -39,7 +39,7 @@ function sendSign(myData,gasLimit){
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
         gasLimit: web3.utils.toHex(gasLimit),
         gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
-        data: addCust  
+        data: myData  
     }
     // Sign the transaction
     //const tx = new Tx(txObject);
@@ -57,7 +57,7 @@ function sendSign(myData,gasLimit){
     const transaction = web3.eth.sendSignedTransaction(raw)
         .on('transactionHash', hash => {
             console.log('TX Hash', hash)
-            console.log('Transaction was send, please wait ... ')
+            alert('Transaction was send, please wait ... ')
             console.log("https://ropsten.etherscan.io/tx/"+ hash);
         })
         .then(receipt => {
@@ -75,6 +75,7 @@ function sendSign(myData,gasLimit){
             else if(receipt.status == false) {
                 console.log('Transaction Failed')
                 alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
+                setTimeout(function () { location.reload(1); }, 500);
                 return false;
             }
         })
@@ -99,6 +100,7 @@ function onClickSend() {
     //var username = document.getElementById("uname").value;
     
     var data = getInfo();
+    console.log(data)
     addCust(current_address, current_username, data, current_bankName);
 
 }

@@ -1,11 +1,9 @@
-//  Web3 intializer
-//  ABI definition, Binary Data and contract Address in contractDetails.js
 //const Web3 = require('web3');
 //const Tx = require('ethereumjs-tx'); 
 
-const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42"));
-//https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42 
-//https://ropsten.infura.io/v3/ac5f43a04597497193bf03a205950f0c
+let web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42"));
+let contractInstance = new web3.eth.Contract(abi, contractAddress);
+console.log(web3, contractInstance)
 
 /*var kycContract = web3.eth.contract(abi);
 var deployedContract = kycContract.new({
@@ -13,13 +11,15 @@ var deployedContract = kycContract.new({
     from: web3.eth.accounts[0],
     gas: 4700000
 });
-var contractInstance = kycContract.at(contractAddress); */
-const contractInstance = new web3.eth.Contract(abi, contractAddress);
-//contractInstance.setProvider(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42"));
+var contractInstance = kycContract.at(contractAddress);*/
 var keyStoreEnc;
+
+if (typeof(Storage) == "undefined") {
+    alert("Sorry, your browser does not support web storage. \nUpgrade to IE9 or contemporary platforms");
+}
 /*
 const xhr = new XMLHttpRequest();
-const url = 'https://ropsten.infura.io/v3/ac5f43a04597497193bf03a205950f0c';
+const url = 'https://ropsten.infura.io/v3/6a68c430ab2e43adb0762c4cfa9bbb42';
 xhr.open('POST', url);
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
 xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
@@ -101,6 +101,8 @@ function onClickLogin() {
 }
 
 async function connection(username, password, bankName) {
+    
+    //document.location = './resources/customerHomePage.html';
     let objKeyStore = JSON.parse(keyStoreEnc);
     let decryptData=web3.eth.accounts.decrypt(objKeyStore, password)
     let privateKey=decryptData.privateKey.substring(2);
@@ -112,9 +114,9 @@ async function connection(username, password, bankName) {
     let acc= web3.eth.accounts.privateKeyToAccount(hexKey);
     let current_account= acc.address;
     localStorage.setItem("accountAddress",current_account);
-    console.log(username, password, bankName)
+    //console.log(username, password, bankName)
 
-    let cek = await web3.eth.getBalance(ownerAccountAddress)
+    let cek = web3.eth.getBalance(ownerAccountAddress)
     console.log('owner', ownerPrivateKey, ownerAccountAddress, cek)
     /*if (contractInstance.checkBank.call(bank_name_l, current_account, {
             from: ,
@@ -124,12 +126,13 @@ async function connection(username, password, bankName) {
     let checkCustomer = await contractInstance.methods.checkAccountCust(username, current_account, password, bankName).call(); 
     console.log(checkCustomer)
     
-    if (checkCustomer == true) {
+    if (checkCustomer == 3) {
         alert("Welcome " + username);
-        document.location.assign('./resources/customerHomePage.html');
+        window.location = './resources/customerHomePage.html';
         return false;
     } else { 
         alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
+        setTimeout(function () { location.reload(1); }, 500);
         return false;
     }
 }
@@ -223,11 +226,12 @@ async function generate(username_c, password_c, bankNameSignup) {
         .then(receipt => {
             console.log('Mined', receipt)
             console.log("Your transaction was mined...")
-            setTimeout(function () { location.reload(1); }, 1000);
+            //setTimeout(function () { location.reload(1); }, 1000);
             console.log(receipt.status)
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Account successfully registered. \nGo to the login area to proceed.");
+                setTimeout(function () { document.location.assign('./index.html'); }, 500);
                 encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 return false;
                 //alert('Transaction Success')
@@ -235,6 +239,7 @@ async function generate(username_c, password_c, bankNameSignup) {
             else if(receipt.status == false) {
                 console.log('Transaction Failed')
                 alert("Account hasn't been successfully registered. \nPlease try again.");
+                setTimeout(function () { location.reload(1); }, 500);
                 return false;
             }
         })
@@ -366,11 +371,12 @@ async function generateForgot(usernameForgot, passwordForgot) {
             .then(receipt => {
                 console.log('Mined', receipt)
                 console.log("Your transaction was mined...")
-                setTimeout(function () { location.reload(1); }, 1000);
+                //setTimeout(function () { location.reload(1); }, 1000);
                 console.log(receipt.status)
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
                     alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
+                    setTimeout(function () { document.location.assign('./index.html'); }, 500);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
                     return false;
                     //alert('Transaction Success')
@@ -378,6 +384,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 else if(receipt.status == false) {
                     console.log('Transaction Failed')
                     alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
+                    setTimeout(function () { location.reload(1); }, 500);
                     return false;
                 }
             })
