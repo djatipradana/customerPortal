@@ -406,13 +406,14 @@ contract Kyc {
     }
     */
     
-    function removeCust(string memory uname) public custNotExist(uname) returns (uint8){
+    function removeCust(string memory uname, string memory bankName, string[] memory filling) public custNotExist(uname) returns (uint8){
         isCust[uname] = false;
         if (!isCust[uname]) {
             updateRatingBank(cust[uname].bankName, false);
             delete acc[uname];
             delete cust[uname];
             delete isCust[uname];
+            req[bankName].userReq = filling;
             return 3;
         }
         return 1;
