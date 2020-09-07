@@ -63,7 +63,7 @@ function sendSign(ownerAccountAddress,privateKey1,myData,gasLimit){
         .then(receipt => {
             console.log('Mined', receipt)
             console.log("Your transaction was mined...")
-            setTimeout(function () { location.reload(1); }, 1000);
+            setTimeout(function () { window.location.reload(1); }, 1000);
             console.log(receipt.status)
             if(receipt.status == true ) {
                 console.log('Transaction Success')
@@ -102,18 +102,17 @@ function onClickLogin() {
 
 async function connection(username, password, bankName) {
     
-    //document.location = './resources/customerHomePage.html';
     let objKeyStore = JSON.parse(keyStoreEnc);
     let decryptData=web3.eth.accounts.decrypt(objKeyStore, password)
     let privateKey=decryptData.privateKey.substring(2);
 
-    localStorage.setItem("username",username);
-    localStorage.setItem("bankName",bankName);
-    localStorage.setItem("accountPrivKey",privateKey);
+    window.localStorage.setItem("username",username);
+    window.localStorage.setItem("bankName",bankName);
+    window.localStorage.setItem("accountPrivKey",privateKey);
     let hexKey="0x"+privateKey;
     let acc= web3.eth.accounts.privateKeyToAccount(hexKey);
     let current_account= acc.address;
-    localStorage.setItem("accountAddress",current_account);
+    window.localStorage.setItem("accountAddress",current_account);
     //console.log(username, password, bankName)
 
     let cek = web3.eth.getBalance(ownerAccountAddress)
@@ -132,7 +131,7 @@ async function connection(username, password, bankName) {
         return false;
     } else { 
         alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
-        setTimeout(function () { location.reload(1); }, 500);
+        setTimeout(function () { window.location.reload(1); }, 500);
         return false;
     }
 }
@@ -170,7 +169,6 @@ function onClickSignUp() {
     }
     if (confirm("I accept that the details provided are correct.") == true) {
         generate(username_c, password_c, bankNameSignup);
-        //document.location.assign('./index.html');
         return false;
     }
 }
@@ -226,12 +224,12 @@ async function generate(username_c, password_c, bankNameSignup) {
         .then(receipt => {
             console.log('Mined', receipt)
             console.log("Your transaction was mined...")
-            //setTimeout(function () { location.reload(1); }, 1000);
+            //setTimeout(function () { window.location.reload(1); }, 1000);
             console.log(receipt.status)
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Account successfully registered. \nGo to the login area to proceed.");
-                setTimeout(function () { document.location.assign('./index.html'); }, 500);
+                setTimeout(function () { window.location.assign('./index.html'); }, 500);
                 encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 return false;
                 //alert('Transaction Success')
@@ -239,7 +237,7 @@ async function generate(username_c, password_c, bankNameSignup) {
             else if(receipt.status == false) {
                 console.log('Transaction Failed')
                 alert("Account hasn't been successfully registered. \nPlease try again.");
-                setTimeout(function () { location.reload(1); }, 500);
+                setTimeout(function () { window.location.reload(1); }, 500);
                 return false;
             }
         })
@@ -309,7 +307,6 @@ function onClickForgot() {
     }
     if (confirm("I accept that the details provided are correct.") == true) {
         generateForgot(usernameForgot, passwordForgot);
-        //document.location.assign('./index.html');
         return false;
     }
 
@@ -371,12 +368,12 @@ async function generateForgot(usernameForgot, passwordForgot) {
             .then(receipt => {
                 console.log('Mined', receipt)
                 console.log("Your transaction was mined...")
-                //setTimeout(function () { location.reload(1); }, 1000);
+                //setTimeout(function () { window.location.reload(1); }, 1000);
                 console.log(receipt.status)
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
                     alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
-                    setTimeout(function () { document.location.assign('./index.html'); }, 500);
+                    setTimeout(function () { window.location.assign('./index.html'); }, 500);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
                     return false;
                     //alert('Transaction Success')
@@ -384,7 +381,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 else if(receipt.status == false) {
                     console.log('Transaction Failed')
                     alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
-                    setTimeout(function () { location.reload(1); }, 500);
+                    setTimeout(function () { window.location.reload(1); }, 500);
                     return false;
                 }
             })

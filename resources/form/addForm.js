@@ -63,19 +63,19 @@ function sendSign(myData,gasLimit){
         .then(receipt => {
             console.log('Mined', receipt)
             console.log("Your transaction was mined...")
-            //setTimeout(function () { location.reload(1); }, 1000);
+            //setTimeout(function () { window.location.reload(1); }, 1000);
             console.log(receipt.status)
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Customer profile successfully created or updated. \nCheck the customer details from the KYC Details tab.");
-                document.location.assign('../customerHomePage.html');
+                window.location.assign('../customerHomePage.html');
                 return false;
                 //alert('Transaction Success')
             }
             else if(receipt.status == false) {
                 console.log('Transaction Failed')
                 alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
-                setTimeout(function () { location.reload(1); }, 500);
+                setTimeout(function () { window.location.reload(1); }, 500);
                 return false;
             }
         })
@@ -125,7 +125,7 @@ async function addCust(current_address, current_username, data, current_bankName
     
     /*if (addCust == 0 ) {
         alert("Customer profile successfully created or updated. \nCheck the customer details from the KYC Details tab.");
-        document.location.assign('../../customerHomePage.html');
+        window.location.assign('../../customerHomePage.html');
         return false;
     } else {
         alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
