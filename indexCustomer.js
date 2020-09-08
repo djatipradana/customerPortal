@@ -130,7 +130,7 @@ async function connection(username, password, bankName) {
             return false;
         } else { 
             alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
-            setTimeout(function () { window.location.reload(1); }, 500);
+            setTimeout(function () { window.location.reload(1); }, 100);
             return false;
         }
     } catch (err) {
@@ -232,7 +232,7 @@ async function generate(username_c, password_c, bankNameSignup) {
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Account successfully registered. \nGo to the login area to proceed.");
-                setTimeout(function () { window.location.assign('./index.html'); }, 500);
+                setTimeout(function () { window.location.assign('./index.html'); }, 100);
                 encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 return false;
                 //alert('Transaction Success')
@@ -240,14 +240,14 @@ async function generate(username_c, password_c, bankNameSignup) {
             else if(receipt.status == false) {
                 console.log('Transaction Failed')
                 alert("Account hasn't been successfully registered. \nPlease try again.");
-                setTimeout(function () { window.location.reload(1); }, 500);
+                setTimeout(function () { window.location.reload(1); }, 100);
                 return false;
             }
         })
         .catch( err => {
             console.log('Error', err)
             alert("Account hasn't been successfully registered. \nPlease try again.");
-            setTimeout(function () { window.location.reload(1); }, 500);
+            setTimeout(function () { window.location.reload(1); }, 100);
             return false;
         })
         .finally(() => {
@@ -378,7 +378,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
                     alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
-                    setTimeout(function () { window.location.assign('./index.html'); }, 500);
+                    setTimeout(function () { window.location.assign('./index.html'); }, 100);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
                     return false;
                     //alert('Transaction Success')
@@ -386,14 +386,14 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 else if(receipt.status == false) {
                     console.log('Transaction Failed')
                     alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
-                    setTimeout(function () { window.location.reload(1); }, 500);
+                    setTimeout(function () { window.location.reload(1); }, 100);
                     return false;
                 }
             })
             .catch( err => {
                 console.log('Error', err)
                 alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
-                setTimeout(function () { window.location.reload(1); }, 500);
+                setTimeout(function () { window.location.reload(1); }, 100);
                 return false;
             })
             .finally(() => {

@@ -57,58 +57,60 @@ async function fillForm() {
     try {
         let viewCust = await contractInstance.methods.viewCustomer(current_username).call();
         let viewBankRating = await contractInstance.methods.getBankRating(viewCust[3]).call();
-    } catch (err) {
-        console.log("Customer data doesn't exist", err.name + ": " + err.message);
-    }
-    /*
-    let viewCust2 = await contractInstance.methods.viewCustomer2(current_username).call();
-    let viewCust3 = await contractInstance.methods.viewCustomer3(current_username).call();
-    */
-    document.getElementById("kyc_status").innerHTML = viewCust[5];
+        
+        /*
+        let viewCust2 = await contractInstance.methods.viewCustomer2(current_username).call();
+        let viewCust3 = await contractInstance.methods.viewCustomer3(current_username).call();
+        */
+        document.getElementById("kyc_status").innerHTML = viewCust[5];
 
-    const toStar = parseFloat(viewCust[4])/100;
-    // Get percentage
-    const starPercentage = (toStar/starsTotal) * 100;
-    // Round to nearest 2
-    const starPercentageRounded = `${Math.round(starPercentage/2) * 2}%`;
-    // Set width of stars-inner to percentage
-    document.querySelector(".stars-inner-cust").style.width = starPercentageRounded;
-    // Add number rating
-    document.querySelector(".customer_rating").innerHTML = toStar;
+        const toStar = parseFloat(viewCust[4])/100;
+        // Get percentage
+        const starPercentage = (toStar/starsTotal) * 100;
+        // Round to nearest 2
+        const starPercentageRounded = `${Math.round(starPercentage/2) * 2}%`;
+        // Set width of stars-inner to percentage
+        document.querySelector(".stars-inner-cust").style.width = starPercentageRounded;
+        // Add number rating
+        document.querySelector(".customer_rating").innerHTML = toStar;
 
-    document.getElementById("customer_address").innerHTML = viewCust[0];
-    document.getElementById("username").innerHTML = viewCust[1];
-    document.getElementById("bank_name").innerHTML = viewCust[3];
+        document.getElementById("customer_address").innerHTML = viewCust[0];
+        document.getElementById("username").innerHTML = viewCust[1];
+        document.getElementById("bank_name").innerHTML = viewCust[3];
 
-    const toStarBank = parseFloat(viewBankRating)/100;
-    console.log(viewBankRating)
-    // Get percentage
-    const starPercentageBank = (toStarBank/starsTotal) * 100;
-    // Round to nearest 2
-    const starPercentageRoundedBank = `${Math.round(starPercentageBank/2) * 2}%`;
-    // Set width of stars-inner to percentage
-    document.querySelector(".stars-inner").style.width = starPercentageRoundedBank;
-    // Add number rating
-    document.querySelector(".bank_rating").innerHTML = toStarBank;
-    
-    var dataProfile = viewCust[2];
-    var fill = "";
-    var index = 0;
-    var check = Math.min(dataProfile.length);
-    for(var i=0; i<check; i++) {
-        if (dataProfile.charAt(i) == '!' && dataProfile.charAt(i+1) == '@' && dataProfile.charAt(i+2) == '#') {
-            for (var j=i+3; j<check; j++) {
-                fill = fill + dataProfile.charAt(j);
-                if (dataProfile.charAt(j) == '!') {
-                    var editFill = fill.slice(0,-1);
-                    document.getElementById(element[index++]).innerHTML = editFill;
-                    fill = "";
-                    editFill = "";
-                    break;
+        const toStarBank = parseFloat(viewBankRating)/100;
+        console.log(viewBankRating)
+        // Get percentage
+        const starPercentageBank = (toStarBank/starsTotal) * 100;
+        // Round to nearest 2
+        const starPercentageRoundedBank = `${Math.round(starPercentageBank/2) * 2}%`;
+        // Set width of stars-inner to percentage
+        document.querySelector(".stars-inner").style.width = starPercentageRoundedBank;
+        // Add number rating
+        document.querySelector(".bank_rating").innerHTML = toStarBank;
+        
+        var dataProfile = viewCust[2];
+        var fill = "";
+        var index = 0;
+        var check = Math.min(dataProfile.length);
+        for(var i=0; i<check; i++) {
+            if (dataProfile.charAt(i) == '!' && dataProfile.charAt(i+1) == '@' && dataProfile.charAt(i+2) == '#') {
+                for (var j=i+3; j<check; j++) {
+                    fill = fill + dataProfile.charAt(j);
+                    if (dataProfile.charAt(j) == '!') {
+                        var editFill = fill.slice(0,-1);
+                        document.getElementById(element[index++]).innerHTML = editFill;
+                        fill = "";
+                        editFill = "";
+                        break;
+                    }
                 }
             }
         }
+    } catch (err) {
+        console.log("Customer data doesn't exist", err.name + ": " + err.message);
     }
+    
     /*
     document.getElementById("first_name").innerHTML = viewCust1[1];
     document.getElementById("middle_name").innerHTML = viewCust1[2];

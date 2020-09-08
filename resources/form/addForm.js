@@ -75,14 +75,14 @@ function sendSign(myData,gasLimit){
             else if(receipt.status == false) {
                 console.log('Transaction Failed')
                 alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
-                setTimeout(function () { window.location.reload(1); }, 500);
+                setTimeout(function () { window.location.reload(1); }, 100);
                 return false;
             }
         })
         .catch( err => {
             console.log('Error', err)
             alert("Customer profile hasn't been successfully created or updated. \nPlease try again.");
-            setTimeout(function () { window.location.reload(1); }, 500);
+            setTimeout(function () { window.location.reload(1); }, 100);
             return false;
         })
         .finally(() => {
