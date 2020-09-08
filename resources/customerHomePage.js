@@ -54,8 +54,12 @@ var user_name = localStorage.username_c; */
 //  function to fill customer data in form
 
 async function fillForm() {
-    let viewCust = await contractInstance.methods.viewCustomer(current_username).call();
-    let viewBankRating = await contractInstance.methods.getBankRating(viewCust[3]).call();
+    try {
+        let viewCust = await contractInstance.methods.viewCustomer(current_username).call();
+        let viewBankRating = await contractInstance.methods.getBankRating(viewCust[3]).call();
+    } catch (err) {
+        console.log("Customer data doesn't exist", err.name + ": " + err.message);
+    }
     /*
     let viewCust2 = await contractInstance.methods.viewCustomer2(current_username).call();
     let viewCust3 = await contractInstance.methods.viewCustomer3(current_username).call();

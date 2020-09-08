@@ -101,10 +101,13 @@ function onClickLogin() {
 }
 
 async function connection(username, password, bankName) {
-    
     let objKeyStore = JSON.parse(keyStoreEnc);
-    let decryptData=web3.eth.accounts.decrypt(objKeyStore, password)
-    let privateKey=decryptData.privateKey.substring(2);
+    try {
+        let decryptData=web3.eth.accounts.decrypt(objKeyStore, password)
+        let privateKey=decryptData.privateKey.substring(2);
+    } catch (err) {
+        alert("Invalid keystore or password")
+    }
 
     window.localStorage.setItem("username",username);
     window.localStorage.setItem("bankName",bankName);
@@ -229,7 +232,7 @@ async function generate(username_c, password_c, bankNameSignup) {
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Account successfully registered. \nGo to the login area to proceed.");
-                setTimeout(function () { window.location.assign('./index.html'); }, 500);
+                setTimeout(function () { window.location.assign('./indexCustomer.html'); }, 500);
                 encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 return false;
                 //alert('Transaction Success')
@@ -243,7 +246,9 @@ async function generate(username_c, password_c, bankNameSignup) {
         })
         .catch( err => {
             console.log('Error', err)
-            //alert('Transaction Failed')
+            alert("Account hasn't been successfully registered. \nPlease try again.");
+            setTimeout(function () { window.location.reload(1); }, 500);
+            return false;
         })
         .finally(() => {
             console.log('Extra Code After Everything')
@@ -373,7 +378,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
                     alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
-                    setTimeout(function () { window.location.assign('./index.html'); }, 500);
+                    setTimeout(function () { window.location.assign('./indexCustomer.html'); }, 500);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
                     return false;
                     //alert('Transaction Success')
@@ -387,7 +392,9 @@ async function generateForgot(usernameForgot, passwordForgot) {
             })
             .catch( err => {
                 console.log('Error', err)
-                //alert('Transaction Failed')
+                alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
+                setTimeout(function () { window.location.reload(1); }, 500);
+                return false;
             })
             .finally(() => {
                 console.log('Extra Code After Everything')
