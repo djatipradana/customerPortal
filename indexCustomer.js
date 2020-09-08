@@ -105,37 +105,37 @@ async function connection(username, password, bankName) {
     try {
         let decryptData=web3.eth.accounts.decrypt(objKeyStore, password)
         let privateKey=decryptData.privateKey.substring(2);
+        window.localStorage.setItem("username",username);
+        window.localStorage.setItem("bankName",bankName);
+        window.localStorage.setItem("accountPrivKey",privateKey);
+        let hexKey="0x"+privateKey;
+        let acc= web3.eth.accounts.privateKeyToAccount(hexKey);
+        let current_account= acc.address;
+        window.localStorage.setItem("accountAddress",current_account);
+        //console.log(username, password, bankName)
+
+        let cek = web3.eth.getBalance(ownerAccountAddress)
+        console.log('owner', ownerPrivateKey, ownerAccountAddress, cek)
+        /*if (contractInstance.checkBank.call(bank_name_l, current_account, {
+                from: ,
+                gas: 4700000
+            ) == bank_name_l) */ 
+        //let checkCustomer = await contractInstance.checkAccountCust.call(username, current_account, password, bankName);
+        let checkCustomer = await contractInstance.methods.checkAccountCust(username, current_account, password, bankName).call(); 
+        console.log(checkCustomer)
+        
+        if (checkCustomer == 3) {
+            alert("Welcome " + username);
+            window.location = './resources/customerHomePage.html';
+            return false;
+        } else { 
+            alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
+            setTimeout(function () { window.location.reload(1); }, 500);
+            return false;
+        }
     } catch (err) {
         alert("Invalid keystore or password")
-    }
-
-    window.localStorage.setItem("username",username);
-    window.localStorage.setItem("bankName",bankName);
-    window.localStorage.setItem("accountPrivKey",privateKey);
-    let hexKey="0x"+privateKey;
-    let acc= web3.eth.accounts.privateKeyToAccount(hexKey);
-    let current_account= acc.address;
-    window.localStorage.setItem("accountAddress",current_account);
-    //console.log(username, password, bankName)
-
-    let cek = web3.eth.getBalance(ownerAccountAddress)
-    console.log('owner', ownerPrivateKey, ownerAccountAddress, cek)
-    /*if (contractInstance.checkBank.call(bank_name_l, current_account, {
-            from: ,
-            gas: 4700000
-        ) == bank_name_l) */ 
-    //let checkCustomer = await contractInstance.checkAccountCust.call(username, current_account, password, bankName);
-    let checkCustomer = await contractInstance.methods.checkAccountCust(username, current_account, password, bankName).call(); 
-    console.log(checkCustomer)
-    
-    if (checkCustomer == 3) {
-        alert("Welcome " + username);
-        window.location = './resources/customerHomePage.html';
-        return false;
-    } else { 
-        alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
-        setTimeout(function () { window.location.reload(1); }, 500);
-        return false;
+        //window.location.reload(1);
     }
 }
 
@@ -232,7 +232,7 @@ async function generate(username_c, password_c, bankNameSignup) {
             if(receipt.status == true ) {
                 console.log('Transaction Success')
                 alert("Account successfully registered. \nGo to the login area to proceed.");
-                setTimeout(function () { window.location.assign('./indexCustomer.html'); }, 500);
+                setTimeout(function () { window.location.assign('./index.html'); }, 500);
                 encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 return false;
                 //alert('Transaction Success')
@@ -378,7 +378,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
                     alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
-                    setTimeout(function () { window.location.assign('./indexCustomer.html'); }, 500);
+                    setTimeout(function () { window.location.assign('./index.html'); }, 500);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
                     return false;
                     //alert('Transaction Success')
