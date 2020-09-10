@@ -30,11 +30,11 @@
                         <!--form-->
                             <h1>Log In</h1>
                             <p>
-                                <label for="username" class="uname"> Username </label>
+                                <label for="username" class="username">Username</label>
                                 <input id="username" name="username" required="required" type="text" placeholder="Username" />
                             </p>
                             <p>
-                                <label for="password" class="youpasswd"> Password </label>
+                                <label for="password" class="youpasswd">Password</label>
                                 <input pattern="(?=.*\d).{6,}" title="Password must contain at least one number and at least 6 characters" id="password" name="password" required="required" type="password" placeholder="Password"/>
                             </p>
                             <p>
@@ -79,8 +79,12 @@
                         <!--form-->
                             <h1> Sign Up </h1>
                             <p>
-                                <label for="usernamesignup" class="uname">Username</label>
+                                <label for="usernamesignup" class="username">Username</label>
                                 <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="Username" />
+                            </p>
+                            <p>
+                                <label for="emailsignup" class="email">Email</label>
+                                <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="Email" />
                             </p>
                             <p>
                                 <label for="passwordsignup" class="youpasswd">Password</label>
@@ -92,7 +96,7 @@
                             </p>
                             <p>
                                 <label for="bankNameSignup" class="youpasswd">Bank Name</label>
-                                <input type="text" list="bankNameSignup-datalist" name="Bank Name" id="bankNameSignup" placeholder="Bank Name" required="required">
+                                <input type="text" list="bankNameSignup-datalist" name="bankNameSignup" id="bankNameSignup" placeholder="Bank Name" required="required">
                                 <datalist id="bankNameSignup-datalist">
                                     <option value="BRI"></option>
                                     <option value="BNI"></option>
@@ -122,7 +126,7 @@
                         <!--form-->
                             <h1> Forgot Password </h1>
                             <p>
-                                <label for="usernameforgot" class="uname">Username</label>
+                                <label for="usernameforgot" class="username">Username</label>
                                 <input id="usernameforgot" name="usernameforgot" required="required" type="text" placeholder="Username" />
                             </p>
                             <p>
@@ -132,6 +136,24 @@
                             <p>
                                 <label for="passwordforgot_confirm" class="youpasswd">Confirm your password</label>
                                 <input id="passwordforgot_confirm" name="passwordforgot_confirm" required="required" type="password" placeholder="Confirm Password" />
+                            </p>
+                            <p>
+                                <label for="bankNameForgot" class="youpasswd">Bank Name</label>
+                                <input type="text" list="bankNameForgot-datalist" name="bankNameForgot" id="bankNameForgot" placeholder="Bank Name" required="required">
+                                <datalist id="bankNameForgot-datalist">
+                                    <option value="BRI"></option>
+                                    <option value="BNI"></option>
+                                    <option value="BTN"></option>
+                                    <option value="Bank Mandiri"></option>
+                                    <option value="BCA"></option>
+                                    <option value="BTPN"></option>
+                                    <option value="Bank CIMB Niaga"></option>
+                                    <option value="Bank Panin"></option>
+                                    <option value="Bank OCBC NISP"></option>
+                                    <option value="Bank Danamon"></option>
+                                    <option value="Bank Maybank"></option>
+                                    <option value="Bank Permata"></option>
+                                </datalist>
                             </p>
                             <p class="signin button">
                                 <input type="submit" value="Submit" onclick="onClickForgot()" />

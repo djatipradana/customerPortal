@@ -413,6 +413,7 @@ contract Kyc {
             delete acc[uname];
             delete cust[uname];
             delete isCust[uname];
+            delete isAcc[uname];
             req[bankName].userReq = filling;
             return 3;
         }

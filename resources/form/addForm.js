@@ -18,9 +18,10 @@ var current_privkey = localStorage.getItem("accountPrivKey");
 var current_address = localStorage.getItem("accountAddress");
 var current_username = localStorage.getItem("username");
 var current_bankName = localStorage.getItem("bankName");
+var current_usernameBank = current_username + "!@#" + current_bankName;
 
 window.onload = function() {
-    //document.getElementById("uname").innerHTML = current_username;
+    //document.getElementById("username").innerHTML = current_username;
     //document.getElementById("bank_name").innerHTML = current_bankName;
 }
 
@@ -97,17 +98,17 @@ function sendSign(myData,gasLimit){
 //  function to create a new KYC profile
 
 function onClickSend() {
-    //document.getElementById("uname").innerHTML = current_username;
+    //document.getElementById("username").innerHTML = current_username;
     //document.getElementById("bank_name").innerHTML = current_bankName;
-    //var username = document.getElementById("uname").value;
+    //var username = document.getElementById("username").value;
     
     var data = getInfo();
     //console.log(data)
-    addCust(current_address, current_username, data, current_bankName);
+    addCust(current_address, current_usernameBank, data, current_bankName);
 
 }
 
-async function addCust(current_address, current_username, data, current_bankName) {
+async function addCust(current_address, current_usernameBank, data, current_bankName) {
     /*let addCust = await contractInstance.methods.addCustomer(current_address, current_username, data, current_bankName).send({
         from: current_address,
         gas: 4700000
@@ -120,7 +121,7 @@ async function addCust(current_address, current_username, data, current_bankName
         from: current_address,
         gas: 4700000
     });
-    let addCust3 = await contractInstance.methods.addCustomer3(current_username, username, country, phone1, phone2, email, current_bankName).send({
+    let addCust3 = await contractInstance.methods.addCustomer3(current_username, username, country, phone1, phone2, username, current_bankName).send({
         from: current_address,
         gas: 4700000
     }); */
@@ -139,9 +140,7 @@ async function addCust(current_address, current_username, data, current_bankName
 //  function to extract data from the form
 
 function getInfo() {
-    var first_name = document.getElementById("first_name").value;
-    var middle_name = document.getElementById("middle_name").value;
-    var last_name = document.getElementById("last_name").value;
+    var name = document.getElementById("name").value;
     var nik = document.getElementById("nik").value;
     var occupation = document.getElementById("occupation").value;
     var income = document.getElementById("income").value;
@@ -156,10 +155,9 @@ function getInfo() {
     var country = document.getElementById("country").value;
     var phone1 = document.getElementById("phone1").value;
     var phone2 = document.getElementById("phone2").value;
-    var email = document.getElementById("email").value;
-
-    var data = "!@#" + first_name + "!@#" + middle_name + "!@#" + last_name + "!@#" + nik + "!@#" + occupation + "!@#" + income.toString() + "!@#";
-    var dataMix =  data + dob.toString() + "!@#" + gender + "!@#" + residence + "!@#" + country + "!@#" + phone1 + "!@#" + phone2 + "!@#" + email + "!@#";
+    
+    var data = "!@#" + name + "!@#" + nik + "!@#" + occupation + "!@#" + income.toString() + "!@#";
+    var dataMix =  data + dob.toString() + "!@#" + gender + "!@#" + residence + "!@#" + country + "!@#" + phone1 + "!@#" + phone2 + "!@#";
 
     return dataMix;
 }

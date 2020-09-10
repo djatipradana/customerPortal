@@ -93,7 +93,7 @@ function onClickLogin() {
         alert("Invalid username or password");
         return false;
     } else if (bankName == "") {
-        alert("Invalid bank name or password");
+        alert("Invalid bank name");
         return false;
     } else {
         connection(username, password, bankName);
@@ -112,7 +112,7 @@ async function connection(username, password, bankName) {
         let acc= web3.eth.accounts.privateKeyToAccount(hexKey);
         let current_account= acc.address;
         window.localStorage.setItem("accountAddress",current_account);
-        //console.log(username, password, bankName)
+        //console.log(email, password, bankName)
 
         let cek = web3.eth.getBalance(ownerAccountAddress)
         console.log('owner', ownerPrivateKey, ownerAccountAddress, cek)
@@ -120,8 +120,9 @@ async function connection(username, password, bankName) {
                 from: ,
                 gas: 4700000
             ) == bank_name_l) */ 
-        //let checkCustomer = await contractInstance.checkAccountCust.call(username, current_account, password, bankName);
-        let checkCustomer = await contractInstance.methods.checkAccountCust(username, current_account, password, bankName).call(); 
+        //let checkCustomer = await contractInstance.checkAccountCust.call(email, current_account, password, bankName);
+        let usernameBankLogin = username + "!@#" + bankName;
+        let checkCustomer = await contractInstance.methods.checkAccountCust(usernameBankLogin, current_account, password, bankName).call(); 
         console.log(checkCustomer)
         
         if (checkCustomer == 3) {
@@ -129,7 +130,7 @@ async function connection(username, password, bankName) {
             window.location = './resources/customerHomePage.html';
             return false;
         } else { 
-            alert("Invalid username or password. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
+            alert("Invalid input. \nAccount hasn't been registered yet . \nSign up before proceeding further.");
             setTimeout(function () { window.location.reload(1); }, 100);
             return false;
         }
@@ -154,16 +155,22 @@ function readFile(input) {
 
 
 function onClickSignUp() {
-    var username_c = document.getElementById("usernamesignup").value;
+    var username_c = document.getElementById("usernamesignup").value
+    var email_c = document.getElementById("emailsignup").value;
     var password_c = document.getElementById("passwordsignup").value;
     var c_password_c = document.getElementById("passwordsignup_confirm").value;
     var bankNameSignup = document.getElementById("bankNameSignup").value;
+
     if (password_c != c_password_c) {
         alert("Confirm your password correctly!");
         return false;
     }
-    if (username_c == "" || password_c == "") {
-        alert("Invalid username or password");
+    if (username_c == "") {
+        alert("Invalid username");
+        return false;
+    }
+    if (email_c == "" || password_c == "") {
+        alert("Invalid email or password");
         return false;
     }
     if (bankNameSignup == "") {
@@ -171,15 +178,15 @@ function onClickSignUp() {
         return false;
     }
     if (confirm("I accept that the details provided are correct.") == true) {
-        generate(username_c, password_c, bankNameSignup);
+        generate(username_c, email_c, password_c, bankNameSignup);
         return false;
     }
 }
 
-async function generate(username_c, password_c, bankNameSignup) {
+async function generate(username_c, email_c, password_c, bankNameSignup) {
     let dataAcc= web3.eth.accounts.create();
     
-    /*let addAccountCust = await contractInstance.methods.addAccountCust(username_c, password_c, dataAcc.address, bankNameSignup).send({
+    /*let addAccountCust = await contractInstance.methods.addAccountCust(email_c, password_c, dataAcc.address, bankNameSignup).send({
         //from: web3.eth.accounts[0],
         from: dataAcc.Address,
         gas: 4700000
@@ -192,7 +199,8 @@ async function generate(username_c, password_c, bankNameSignup) {
     let privKey = dataAcc.privateKey;
     console.log('accountAddress', privKey.substring(2), dataAcc.address) 
     let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
-    let addAccountCust = await contractInstance.methods.addAccountCust(username_c, password_c, dataAcc.address, bankNameSignup).encodeABI();
+    let usernameBankSignup = username_c + "!@#" + bankNameSignup;
+    let addAccountCust = await contractInstance.methods.addAccountCust(usernameBankSignup, email_c, password_c, dataAcc.address, bankNameSignup).encodeABI();
     //sendSign(dataAcc.address,privateKey1,addAccountCust,250000);
     
     web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
@@ -201,7 +209,7 @@ async function generate(username_c, password_c, bankNameSignup) {
         nonce:    web3.utils.toHex(txCount),
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
-        gasLimit: web3.utils.toHex(250000),
+        gasLimit: web3.utils.toHex(270000),
         gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
         data: addAccountCust
     }
@@ -301,6 +309,7 @@ function onClickForgot() {
     var usernameForgot = document.getElementById("usernameforgot").value;
     var passwordForgot = document.getElementById("passwordforgot").value;
     var passwordForgot_confirm = document.getElementById("passwordforgot_confirm").value;
+    var bankNameForgot = document.getElementById("bankNameForgot").value;
 
     if (passwordForgot != passwordForgot_confirm) {
         alert("Confirm your password correctly!");
@@ -310,23 +319,27 @@ function onClickForgot() {
         alert("Invalid username or password");
         return false;
     }
+    if (bankNameForgot == "") {
+        alert("Invalid Bank Name");
+        return false;
+    }
     if (confirm("I accept that the details provided are correct.") == true) {
-        generateForgot(usernameForgot, passwordForgot);
+        generateForgot(usernameForgot, passwordForgot, bankNameForgot);
         return false;
     }
 
 }
 
-async function generateForgot(usernameForgot, passwordForgot) {
+async function generateForgot(usernameForgot, passwordForgot, bankNameForgot) {
     let dataAcc= web3.eth.accounts.create();
-    /*let removeAccountCust = await contractInstance.methods.removeAccountCust(usernameForgot).send({
+    /*let removeAccountCust = await contractInstance.methods.removeAccountCust(emailForgot).send({
         //from: web3.eth.accounts[0],
         from: dataAcc.Address,
         gas: 4700000
     }); */
 
     //if (removeAccountCust == 0) {
-        /*let forgotAccountCust = await contractInstance.methods.forgotAccountCust(usernameForgot, passwordForgot, dataAcc.address).send({
+        /*let forgotAccountCust = await contractInstance.methods.forgotAccountCust(emailForgot, passwordForgot, dataAcc.address).send({
             //from: web3.eth.accounts[0],
             from: dataAcc.Address,
             gas: 4700000
@@ -338,7 +351,8 @@ async function generateForgot(usernameForgot, passwordForgot) {
         let privKey = dataAcc.privateKey;
         console.log('accountAddress', privKey.substring(2), dataAcc.address) 
         let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
-        let forgotAccountCust = await contractInstance.methods.forgotAccountCust(usernameForgot, passwordForgot, dataAcc.address).encodeABI();
+        let usernameBankForgot = usernameForgot + "!@#" + bankNameForgot;
+        let forgotAccountCust = await contractInstance.methods.forgotAccountCust(usernameBankForgot, passwordForgot, dataAcc.address).encodeABI();
         //sendSign(dataAcc.address,privateKey1,forgotAccountCust,250000);
 
         web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
@@ -377,7 +391,7 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 console.log(receipt.status)
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
-                    alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
+                    alert(emailForgot + " account successfully updated. \nGo to the login area to proceed.");
                     setTimeout(function () { window.location.assign('./index.html'); }, 100);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
                     return false;
@@ -385,14 +399,14 @@ async function generateForgot(usernameForgot, passwordForgot) {
                 }
                 else if(receipt.status == false) {
                     console.log('Transaction Failed')
-                    alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
+                    alert(emailForgot + " account hasn't been successfully updated. \nPlease try again.");
                     setTimeout(function () { window.location.reload(1); }, 100);
                     return false;
                 }
             })
             .catch( err => {
                 console.log('Error', err)
-                alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
+                alert(emailForgot + " account hasn't been successfully updated. \nPlease try again.");
                 setTimeout(function () { window.location.reload(1); }, 100);
                 return false;
             })
@@ -402,14 +416,14 @@ async function generateForgot(usernameForgot, passwordForgot) {
         });
 
         /*if (forgotAccountCust == 0) {
-            alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
+            alert(emailForgot + " account successfully updated. \nGo to the login area to proceed.");
             encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
             return false;
         } else {
-            alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
+            alert(emailForgot + " account hasn't been successfully updated. \nPlease try again.");
             return false;
         }   */
     //} else {
-        //alert(usernameForgot + " hasn't been registered yet");
+        //alert(emailForgot + " hasn't been registered yet");
     //}
 }
