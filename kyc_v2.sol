@@ -205,6 +205,7 @@ contract Kyc {
         return 1;
     }
     
+    /*
     function removeAccountCust(string memory username) public accNotExist(username) returns (uint8){
         isAcc[username] = false;
         if (!isAcc[username]) {
@@ -214,6 +215,7 @@ contract Kyc {
         }
         return 1;
     }
+    */
     
     function checkAccountCust(string memory username, string memory uname, address ethAddress, string memory password, string memory bankName) public view accNotExist(username) returns(uint8) {
         if (stringsEqual(acc[username].username, uname) && acc[username].ethAddress == ethAddress && stringsEqual(acc[username].password, password) && stringsEqual(acc[username].bankName, bankName)) {
@@ -251,10 +253,11 @@ contract Kyc {
         isCust[username] = false;
         if (!isCust[username]) {
             updateRatingBank(cust[username].bankName, false);
+            delete checkEmail[cust[username].email];
             delete acc[username];
+            delete isAcc[username];
             delete cust[username];
             delete isCust[username];
-            delete isAcc[username];
             req[bankName].userReq = filling;
             return 3;
         }
