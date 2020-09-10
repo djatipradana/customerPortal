@@ -51,11 +51,12 @@ body{
 	font-weight: 400;
 	font-size: 15px;
 	color: #1d3c41;
-	overflow-y: scroll;
+	overflow-y: auto;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	background-size: cover;
 	-o-background-size: cover;
+	background-attachment: fixed;
 }
 a{
 	color: #333;
