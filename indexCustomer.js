@@ -122,7 +122,7 @@ async function connection(username, password, bankName) {
             ) == bank_name_l) */ 
         //let checkCustomer = await contractInstance.checkAccountCust.call(email, current_account, password, bankName);
         let usernameBankLogin = username + "!@#" + bankName;
-        let checkCustomer = await contractInstance.methods.checkAccountCust(usernameBankLogin, current_account, password, bankName).call(); 
+        let checkCustomer = await contractInstance.methods.checkAccountCust(usernameBankLogin, username, current_account, password, bankName).call(); 
         console.log(checkCustomer)
         
         if (checkCustomer == 3) {

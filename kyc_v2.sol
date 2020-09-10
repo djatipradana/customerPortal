@@ -182,8 +182,8 @@ contract Kyc {
 
     
     
-    function addAccountCust(string memory username, string memory email, string memory password, address ethAddress, string memory bankName) public accExist(username, email) isPartOfAcc(username) returns(uint8){
-        acc[username].username = username;
+    function addAccountCust(string memory username, string memory uname, string memory email, string memory password, address ethAddress, string memory bankName) public accExist(username, email) isPartOfAcc(username) returns(uint8){
+        acc[username].username = uname;
         acc[username].email = email;
         acc[username].password = password;
         acc[username].ethAddress = ethAddress;
@@ -193,10 +193,10 @@ contract Kyc {
         return 3;
     }
     
-    function forgotAccountCust(string memory username, string memory password, address ethAddress) public accNotExist(username) returns(uint8){
+    function forgotAccountCust(string memory username, string memory uname, string memory password, address ethAddress) public accNotExist(username) returns(uint8){
         if (isAcc[username] == true) {
             //removeAccountCust(username);
-            acc[username].username = username;
+            acc[username].username = uname;
             acc[username].password = password;
             acc[username].ethAddress = ethAddress;
             isAcc[username] = true;
@@ -215,8 +215,8 @@ contract Kyc {
         return 1;
     }
     
-    function checkAccountCust(string memory username, address ethAddress, string memory password, string memory bankName) public view accNotExist(username) returns(uint8) {
-        if (stringsEqual(acc[username].username, username) && acc[username].ethAddress == ethAddress && stringsEqual(acc[username].password, password) && stringsEqual(acc[username].bankName, bankName)) {
+    function checkAccountCust(string memory username, string memory uname, address ethAddress, string memory password, string memory bankName) public view accNotExist(username) returns(uint8) {
+        if (stringsEqual(acc[username].username, uname) && acc[username].ethAddress == ethAddress && stringsEqual(acc[username].password, password) && stringsEqual(acc[username].bankName, bankName)) {
             return 3;
         }
         return 1;
@@ -224,9 +224,9 @@ contract Kyc {
 
     
     
-    function addCustomer(address custAddress, string memory username, string memory data, string memory bankName) public returns(uint8) {
+    function addCustomer(address custAddress, string memory username, string memory uname, string memory data, string memory bankName) public returns(uint8) {
         cust[username].custAddress = custAddress;
-        cust[username].username = username; 
+        cust[username].username = uname; 
         cust[username].email = acc[username].email;
         cust[username].data = data;
         cust[username].bankName = bankName;
