@@ -200,7 +200,7 @@ async function generate(username_c, email_c, password_c, bankNameSignup) {
     console.log('accountAddress', privKey.substring(2), dataAcc.address) 
     let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
     let usernameBankSignup = username_c + "!@#" + bankNameSignup;
-    let addAccountCust = await contractInstance.methods.addAccountCust(usernameBankSignup, email_c, password_c, dataAcc.address, bankNameSignup).encodeABI();
+    let addAccountCust = await contractInstance.methods.addAccountCust(usernameBankSignup, username_c, email_c, password_c, dataAcc.address, bankNameSignup).encodeABI();
     //sendSign(dataAcc.address,privateKey1,addAccountCust,250000);
     
     web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {
@@ -209,7 +209,7 @@ async function generate(username_c, email_c, password_c, bankNameSignup) {
         nonce:    web3.utils.toHex(txCount),
         to:       contractAddress,
         value:    web3.utils.toHex(web3.utils.toWei('0', 'ether')),
-        gasLimit: web3.utils.toHex(270000),
+        gasLimit: web3.utils.toHex(250000),
         gasPrice: web3.utils.toHex(web3.utils.toWei('12', 'gwei')),
         data: addAccountCust
     }
@@ -352,7 +352,7 @@ async function generateForgot(usernameForgot, passwordForgot, bankNameForgot) {
         console.log('accountAddress', privKey.substring(2), dataAcc.address) 
         let privateKey1 = new ethereumjs.Buffer.Buffer(ownerPrivateKey, 'hex');
         let usernameBankForgot = usernameForgot + "!@#" + bankNameForgot;
-        let forgotAccountCust = await contractInstance.methods.forgotAccountCust(usernameBankForgot, passwordForgot, dataAcc.address).encodeABI();
+        let forgotAccountCust = await contractInstance.methods.forgotAccountCust(usernameBankForgot, usernameForgot, passwordForgot, dataAcc.address).encodeABI();
         //sendSign(dataAcc.address,privateKey1,forgotAccountCust,250000);
 
         web3.eth.getTransactionCount(ownerAccountAddress, (err, txCount) => {

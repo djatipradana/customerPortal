@@ -114,7 +114,7 @@ async function addCust(current_address, current_usernameBank, data, current_bank
         gas: 4700000
     }); */
 
-    let addCust = await contractInstance.methods.addCustomer(current_address, current_username, data, current_bankName).encodeABI();
+    let addCust = await contractInstance.methods.addCustomer(current_address, current_usernameBank, current_username, data, current_bankName).encodeABI();
     sendSign(addCust,500000);
 
     /*let addCust2 = await contractInstance.methods.addCustomer2(current_username, username, occupation, income, dob, gender, residence).send({
