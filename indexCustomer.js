@@ -239,9 +239,9 @@ async function generate(username_c, email_c, password_c, bankNameSignup) {
             console.log(receipt.status)
             if(receipt.status == true ) {
                 console.log('Transaction Success')
+                encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 alert("Account successfully registered. \nGo to the login area to proceed.");
                 setTimeout(function () { window.location.assign('./index.html'); }, 100);
-                encryptPrivateKey(dataAcc.privateKey,dataAcc.address,password_c);
                 return false;
                 //alert('Transaction Success')
             }
@@ -391,22 +391,22 @@ async function generateForgot(usernameForgot, passwordForgot, bankNameForgot) {
                 console.log(receipt.status)
                 if(receipt.status == true ) {
                     console.log('Transaction Success')
-                    alert(emailForgot + " account successfully updated. \nGo to the login area to proceed.");
-                    setTimeout(function () { window.location.assign('./index.html'); }, 100);
                     encryptPrivateKey(dataAcc.privateKey,dataAcc.address,passwordForgot);
+                    alert(usernameForgot + " account successfully updated. \nGo to the login area to proceed.");
+                    setTimeout(function () { window.location.assign('./index.html'); }, 100);
                     return false;
                     //alert('Transaction Success')
                 }
                 else if(receipt.status == false) {
                     console.log('Transaction Failed')
-                    alert(emailForgot + " account hasn't been successfully updated. \nPlease try again.");
+                    alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
                     setTimeout(function () { window.location.reload(1); }, 100);
                     return false;
                 }
             })
             .catch( err => {
                 console.log('Error', err)
-                alert(emailForgot + " account hasn't been successfully updated. \nPlease try again.");
+                alert(usernameForgot + " account hasn't been successfully updated. \nPlease try again.");
                 setTimeout(function () { window.location.reload(1); }, 100);
                 return false;
             })
