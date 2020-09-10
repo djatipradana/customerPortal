@@ -232,7 +232,7 @@ contract Kyc {
         cust[username].bankName = bankName;
         cust[username].kycStatus = "Not Verified";
         if (!isCust[username]) {
-            req[bankName].userReq.push(username);
+            req[bankName].userReq.push(uname);
             cust[username].rating = 100;
             cust[username].upvotes = 0;
             isCust[username] = true;
@@ -275,8 +275,8 @@ contract Kyc {
     }
     
     
-    function getCustForVerify(string memory username, string memory bankName) public custNotExist(username) view returns(uint8) {
-        if (stringsEqual(cust[username].username, username) && stringsEqual(cust[username].bankName, bankName)) {
+    function getCustForVerify(string memory username, string memory uname, string memory bankName) public custNotExist(username) view returns(uint8) {
+        if (stringsEqual(cust[username].username, uname) && stringsEqual(cust[username].bankName, bankName)) {
             if (stringsEqual(cust[username].kycStatus, "Not Verified") || stringsEqual(cust[username].kycStatus, "Rejected")) {
                 return 3;
             }
@@ -288,8 +288,8 @@ contract Kyc {
     }
     
     
-    function getCustForDelete(string memory username, string memory bankName) public custNotExist(username) view returns(uint8) {
-        if (stringsEqual(cust[username].username, username) && stringsEqual(cust[username].bankName, bankName)) {
+    function getCustForDelete(string memory username, string memory uname, string memory bankName) public custNotExist(username) view returns(uint8) {
+        if (stringsEqual(cust[username].username, uname) && stringsEqual(cust[username].bankName, bankName)) {
             return 3;
         }
         return 1;
